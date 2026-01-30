@@ -79,21 +79,21 @@ public class CustomAndroidFormatStrategy implements MediaFormatStrategy {
             outHeight = inHeight;
         }
 
-        MediaFormat format = MediaFormat.createVideoFormat("video/avc", outWidth, outHeight);
+        MediaFormat format = MediaFormat.createVideoFormat(VIDEO_MIME_TYPE, outWidth, outHeight);
         format.setInteger(MediaFormat.KEY_BIT_RATE, mBitRate);
         format.setInteger(MediaFormat.KEY_FRAME_RATE, mFrameRate);
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 3);
         format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
 
         // Set color format (required for surface encoding)
-        outputFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
         
         // Add profile and level for better compatibility (H.264 Baseline Profile)
         // This ensures broad device compatibility
-        outputFormat.setInteger(MediaFormat.KEY_PROFILE, MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline);
+        format.setInteger(MediaFormat.KEY_PROFILE, MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline);
         
         // Set bitrate mode to VBR (Variable Bitrate) for better quality
-        outputFormat.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
+        format.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
         
         return format;
 
