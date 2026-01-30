@@ -16,8 +16,12 @@ public class CustomAndroidFormatStrategy implements MediaFormatStrategy {
     private static final String TAG = "CustomFormatStrategy";
     private static final int DEFAULT_BITRATE = 8000000;
     private static final int DEFAULT_FRAMERATE = 30;
-    private static final int DEFAULT_WIDTH = 0;
-    private static final int DEFAULT_HEIGHT = 0;
+    private static final int DEFAULT_WIDTH = 0; // 0 means use original
+    private static final int DEFAULT_HEIGHT = 0; // 0 means use original
+    private static final int IFRAME_INTERVAL = 3; // GOP interval in seconds
+    private static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC; // H.264
+    // Minimum dimensions to prevent invalid outputs
+    private static final int MIN_DIMENSION = 16; // Must be multiple of 16 for most codecs
     private final int mBitRate;
     private final int mFrameRate;
     private final int width;
@@ -81,6 +85,16 @@ public class CustomAndroidFormatStrategy implements MediaFormatStrategy {
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 3);
         format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
 
+        // Set color format (required for surface encoding)
+        outputFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        
+        // Add profile and level for better compatibility (H.264 Baseline Profile)
+        // This ensures broad device compatibility
+        outputFormat.setInteger(MediaFormat.KEY_PROFILE, MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline);
+        
+        // Set bitrate mode to VBR (Variable Bitrate) for better quality
+        outputFormat.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
+        
         return format;
 
     }
