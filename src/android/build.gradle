@@ -9,11 +9,6 @@ dependencies {
 }
 
 android {
-    compileOptions {
-        // Enable Java 8+ language features
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
     
     packagingOptions {
         exclude 'META-INF/NOTICE'
